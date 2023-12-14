@@ -1,5 +1,5 @@
 import classes from "./tabs.module.scss";
-
+import React from 'react';
 function Tabs() {
   return (
     <div className={classes.tabs}>

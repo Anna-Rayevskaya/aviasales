@@ -1,5 +1,5 @@
 import classes from "./filter.module.scss";
-
+import React from 'react';
 function Filter() {
   return (
     <div className={classes.filter}>

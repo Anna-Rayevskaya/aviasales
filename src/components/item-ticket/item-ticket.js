@@ -1,5 +1,6 @@
 import classes from './item-ticket.module.scss'
 import Logo from './S7 Logo.png'
+import React from 'react';
 
 function ItemTicket (){
     return(
