@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import classes from './app.module.scss'
 import Filter from '../filter'
 import ItemTicket from '../item-ticket'
