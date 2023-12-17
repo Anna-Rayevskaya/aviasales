@@ -5,26 +5,55 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleFilter, removeFilter } from "../store/sliсe-filterReducer";
 
 function Filter() {
-  const tabActive = useSelector((state) => state.filter.filter);
-  console.log(tabActive);
+  const filterActive = useSelector((state) => state.filter.filter);
+  console.log(filterActive);
 
   const dispatch = useDispatch();
 
   const toggle = (e) => {
-    console.log(e.target.checked);
-    if (e.target.checked === true) {
-      dispatch(toggleFilter(e.target.parentNode.textContent.trim()));
+    const textContent = e.target.parentNode.textContent.trim();
+    const checkboxes = document.querySelectorAll(`.${classes["check-input"]}`);
+  
+    if (textContent === "Все") {
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = e.target.checked;
+        dispatch(
+          e.target.checked
+            ? toggleFilter(checkbox.parentNode.textContent.trim())
+            : removeFilter(checkbox.parentNode.textContent.trim())
+        );
+      });
     } else {
-      dispatch(removeFilter(e.target.parentNode.textContent.trim()));
+      const anyUnchecked = Array.from(checkboxes).some((checkbox) => {
+        return checkbox.parentNode.textContent.trim() !== "Все" && !checkbox.checked;
+      });
+
+      if (anyUnchecked) {
+        const allCheckbox = document.querySelector(`.${classes["check-input"]}`);
+        allCheckbox.checked = false;
+        dispatch(removeFilter("Все"));
+      }
+  
+      if (!anyUnchecked) {
+        const allCheckbox = document.querySelector(`.${classes["check-input"]}`);
+        allCheckbox.checked = true;
+        dispatch(toggleFilter("Все"));
+      }
+
+      if (e.target.checked === true) {
+        dispatch(toggleFilter(textContent));
+      } else {
+        dispatch(removeFilter(textContent));
+      }
     }
-  };
+  }
 
   return (
     <div className={classes.filter}>
       <div className={classes["label-filter"]}>Количество пересадок</div>
 
-      <label className={classes["input-filter"]} onChange={toggle}>
-        <input className={classes["check-input"]} type="checkbox"   />
+      <label className={classes["input-filter"]} >
+        <input className={classes["check-input"]} type="checkbox" onChange={toggle} />
         <span className={classes["check-box"]}></span>
         Все
       </label>
