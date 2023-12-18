@@ -8,6 +8,7 @@ const tabsReducer = createSlice({
     reducers:{
         toggleSorting (state, action) {
             return {
+                ...state,
                 tabs: action.payload
             };
         }

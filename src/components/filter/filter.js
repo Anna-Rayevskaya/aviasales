@@ -1,12 +1,10 @@
 import classes from "./filter.module.scss";
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { toggleFilter, removeFilter } from "../store/sliсe-filterReducer";
 
 function Filter() {
-  const filterActive = useSelector((state) => state.filter.filter);
-  console.log(filterActive);
 
   const dispatch = useDispatch();
 
