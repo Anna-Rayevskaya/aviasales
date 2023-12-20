@@ -23,7 +23,9 @@ export const fetchTicket = createAsyncThunk(
         try {
         const response  = await fetch(`https://aviasales-test-api.kata.academy/tickets?searchId=${id}`);
         if (!response.ok) {
-            throw new Error('Failed to receive tickets!');
+            if(response.status < 500){
+                throw new Error('Failed to receive tickets!');
+            }
         }
         return await response.json();
     } catch (error) {
@@ -38,7 +40,8 @@ const ticketsReducer = createSlice({
     initialState: {
         tickets: [],
         id: null,
-        stop: false,
+        stop: null,
+        rec: false,
     },
     reducers: {
         sortedTickets(state, action) {
@@ -59,6 +62,7 @@ const ticketsReducer = createSlice({
         builder
           .addCase(fetchId.fulfilled, (state, action) => {
             state.id = action.payload.searchId;
+            state.stop = false;
           })
           .addCase(fetchId.rejected, (state, action) => {
             console.log('rejected fetchId', action);
@@ -66,12 +70,15 @@ const ticketsReducer = createSlice({
           .addCase(fetchTicket.fulfilled, (state, action) => {
             state.tickets.push(...action.payload.tickets);
             state.stop = action.payload.stop;
-            if(action.payload.stop === true){
-                state.tickets.sort((a, b) => a.price - b.price);
+            state.tickets.sort((a, b) => a.price - b.price);
+            if(!action.payload.stop){
+                state.rec = !state.rec
             }
+
           })
           .addCase(fetchTicket.rejected, (state, action) => {
             console.log('rejected fetchTicket', action);
+            state.rec = !state.rec
           });
       },
 })
