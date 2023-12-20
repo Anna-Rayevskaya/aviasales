@@ -1,34 +1,46 @@
 
 import React from "react";
 import ItemTicket from "../item-ticket";
-import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { fetchId, fetchTicket} from "../store/slice-ticketReducer";
-import { useDispatch } from "react-redux";
+import { fetchId, fetchTicket, sortedTickets} from "../store/slice-ticketReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 function ListTickets() {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.tickets.id);
-  console.log(id);
+  const tickets = useSelector((state) => state.tickets.tickets);
+  console.log(tickets);
+  const tabActive = useSelector((state) => state.tabs.tabs);
+  console.log(tabActive);
+  const stop = useSelector((state) => state.tickets.stop);
+  console.log(stop);
 
   useEffect(() => {
     dispatch(fetchId());
-  }, [dispatch]);
-
+  }, []);
+  
   useEffect(() => {
-    if (id) {
-      dispatch(fetchTicket(id));
+    function data (){
+      if (id && !stop) {
+        dispatch(fetchTicket(id));
+        if(stop){
+          data()
+        }
+
+      } else{
+        return
+      }
     }
-  }, [id, dispatch]);
+    data ()
+  }, [id, stop, dispatch]);
+  
+  useEffect(() => {
+      dispatch(sortedTickets(tabActive));
+  }, [ tabActive]);
 
   function generateRandomId() {
     return Math.random().toString(36).substring(2);
   }
-
-  const tickets = useSelector((state) => state.tickets.tickets);
-  console.log(tickets);
-
-
 
   return (
     <div>
@@ -42,11 +54,6 @@ function ListTickets() {
       ))}
     </div>
   );
-  // return(
-  //   <div>
-  //     <ItemTicket/>
-  //   </div>
-  // )
 }
 
 export default ListTickets;
