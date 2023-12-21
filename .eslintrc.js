@@ -1,12 +1,18 @@
 module.exports = {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "jest": true
     },
-    "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended"
-    ],
+    "ignorePatterns": ["node_modules", "dist", "build"],
+    "extends": ["airbnb", "airbnb/hooks", "plugin:react/jsx-runtime", "prettier"],
+    "parserOptions": {
+        "ecmaFeatures": {
+          "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+      },
     "overrides": [
         {
             "env": {
@@ -20,14 +26,17 @@ module.exports = {
             }
         }
     ],
-    "parserOptions": {
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react"
-    ],
+    "plugins": ["react", "jsx-a11y", "import", "react-hooks", "prettier"],
     "rules": {
         "no-plusplus": "off"
-    }
+    },
+    "settings": {
+        "version": "detect",
+        "import/resolver": {
+          "node": {
+            "extensions": [".js", ".jsx", ".ts", ".tsx"],
+            "moduleDirectory": ["node_modules", "src/"]
+          }
+        }
+      }
 }
