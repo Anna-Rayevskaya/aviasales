@@ -7,32 +7,24 @@ import { useDispatch, useSelector } from "react-redux";
 function ListTickets() {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.tickets.id);
-  const tickets = useSelector((state) => state.tickets.tickets);
-  console.log(tickets)
-  const tabActive = useSelector((state) => state.tabs.tabs);
-  const stop = useSelector((state) => state.tickets.stop);
+  const ticketsFilter = useSelector((state) => state.tickets.ticketsFilter)
   const rec = useSelector((state) => state.tickets.rec);
+  const tabs = useSelector(state => state.tabs.tabs)
+  const filter = useSelector(state => state.filter.filter)
 
   useEffect(() => {
     dispatch(fetchId());
   }, []);
 
   useEffect(() => {
-    if(id && !stop){
+    if(id){
       dispatch(fetchTicket(id));
     }
-  }, [ id, rec]);
-  
-  // useEffect(() => {
-  //   if(id && !stop){
-  //     dispatch(fetchTicket(id))
-  //   }
-  // }, [rec]);
+  }, [id, rec]);
 
-  
   useEffect(() => {
-      dispatch(sortedTickets(tabActive));
-  }, [ tabActive]);
+    dispatch(sortedTickets(tabs))
+  }, [filter, tabs])
 
   function generateRandomId() {
     return Math.random().toString(36).substring(2);
@@ -40,7 +32,7 @@ function ListTickets() {
 
   return (
     <div>
-      {tickets.map((ticket) => (
+      {ticketsFilter.map((ticket) => (
         <ItemTicket
           key={generateRandomId()}
           carrier={ticket.carrier}

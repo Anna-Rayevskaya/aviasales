@@ -6,11 +6,13 @@ const filterReducer = createSlice({
         filter: [],
     },
     reducers:{
-        toggleFilter (state, action) {
-                return {
-                    ...state,
-                    filter: [...state.filter, action.payload]
-                };
+        toggleFilter(state, action) {
+            const newFilter = [...state.filter, action.payload];
+            const uniqueFilter = Array.from(new Set(newFilter));
+            return {
+                ...state,
+                filter: uniqueFilter.filter(item => item !== "Все")
+            };
         },
 
         removeFilter (state, action){

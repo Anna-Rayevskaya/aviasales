@@ -3,9 +3,12 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { toggleSorting } from "../store/slice-tabsReducer";
+
 function Tabs() { 
+
   const tabActive = useSelector((state) => state.tabs.tabs);
   const dispatch = useDispatch();
+
   const toggle = (e) => {
     dispatch(toggleSorting(e.target.textContent));
   };

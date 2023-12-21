@@ -1,12 +1,19 @@
 import classes from "./filter.module.scss";
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { toggleFilter, removeFilter } from "../store/sliсe-filterReducer";
+import { filterTickets} from "../store/slice-ticketReducer"
 
 function Filter() {
 
+  const filter = useSelector(state => state.filter.filter)
+
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(filterTickets(filter))
+  }, [filter])
 
   const toggle = (e) => {
     const textContent = e.target.parentNode.textContent.trim();
@@ -15,7 +22,7 @@ function Filter() {
     if (textContent === "Все") {
       checkboxes.forEach((checkbox) => {
         checkbox.checked = e.target.checked;
-        dispatch(
+        dispatch( 
           e.target.checked
             ? toggleFilter(checkbox.parentNode.textContent.trim())
             : removeFilter(checkbox.parentNode.textContent.trim())
@@ -35,7 +42,7 @@ function Filter() {
       if (!anyUnchecked) {
         const allCheckbox = document.querySelector(`.${classes["check-input"]}`);
         allCheckbox.checked = true;
-        dispatch(toggleFilter("Все"));
+        // dispatch(toggleFilter("Все"));
       }
 
       if (e.target.checked === true) {

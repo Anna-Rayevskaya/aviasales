@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const tabsReducer = createSlice({
     name: 'tabs',
     initialState: {
-        tabs: 'Самый дешевый'
+        tabs: ''
     },
     reducers:{
         toggleSorting (state, action) {
