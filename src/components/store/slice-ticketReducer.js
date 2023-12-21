@@ -58,9 +58,13 @@ const ticketsReducer = createSlice({
               (a, b) => a.segments[0].duration - b.segments[0].duration
             );
             break;
-          case "Оптимальный":
-            // Add your logic for "Оптимальный" case here
-            break;
+            case "Оптимальный":
+              sortedTickets.sort((a, b) => {
+                const aScore = a.price + a.segments[0].duration; 
+                const bScore = b.price + b.segments[0].duration;
+                return aScore - bScore;
+              });
+              break;
         }
       
         return {

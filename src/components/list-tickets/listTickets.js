@@ -3,6 +3,7 @@ import ItemTicket from "../item-ticket";
 import { useEffect } from "react";
 import { fetchId, fetchTicket, sortedTickets} from "../store/slice-ticketReducer";
 import { useDispatch, useSelector } from "react-redux";
+import classes from './listTickets.module.scss'
 
 function ListTickets() {
   const dispatch = useDispatch();
@@ -30,7 +31,14 @@ function ListTickets() {
     return Math.random().toString(36).substring(2);
   }
 
-  return (
+  if(filter.length === 0){
+    return(
+      <div className={classes.title}>
+        <h4>Рейсов, подходящих под заданные фильтры, не найдено</h4>
+      </div>
+    )
+  } else{
+    return (
     <div>
       {ticketsFilter.map((ticket) => (
         <ItemTicket
@@ -42,6 +50,9 @@ function ListTickets() {
       ))}
     </div>
   );
+  }
+
+  
 }
 
 export default ListTickets;
